@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Define um gerador de cliente Prisma para interação com o banco de dados
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Define uma fonte de dados chamada "db" usando o provedor MongoDB
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL") // Obtém a URL do banco de dados do ambiente
+}
+
+// Define um modelo chamado "Customer" para representar entidades no banco de dados
+model Customer {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  name       String      // Campo para o nome do cliente
+  email      String      @unique // Campo para o e-mail do cliente (único)
+  status     Boolean     // Campo para o status do cliente (presumivelmente ativo ou inativo)
+  created_at DateTime?   @default(now()) // Campo para a data de criação (opcional)
+  updated_at DateTime?   @default(now()) // Campo para a última data de atualização (opcional)
+
+  // Mapeia este modelo para a coleção "customer" no MongoDB
+  @@map("customer")
+}
